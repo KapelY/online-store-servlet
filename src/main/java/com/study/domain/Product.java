@@ -1,18 +1,24 @@
 package com.study.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-class Product {
+@Builder
+public class Product {
     private Long id;
     private String name;
     private Double price;
-    private Timestamp creationDate;
+    private LocalDateTime dateTime;
+
+    public Product(String name, Double price, LocalDateTime dateTime) {
+        this.name = name;
+        this.price = price;
+        this.dateTime = dateTime;
+    }
 }
 
