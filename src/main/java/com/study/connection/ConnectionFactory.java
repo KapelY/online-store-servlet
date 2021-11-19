@@ -1,5 +1,6 @@
 package com.study.connection;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
@@ -9,12 +10,14 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 @Data
+@AllArgsConstructor
 @Slf4j
 public class ConnectionFactory {
     private final String DRIVER = "driver";
     private final String URL = "url";
     private final String USER = "user";
     private final String PASSWORD = "password";
+
     private Properties properties;
 
     public Connection getConnection() {

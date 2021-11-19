@@ -13,9 +13,9 @@ import java.util.List;
 @AllArgsConstructor
 public class ProductDaoImpl implements ProductDao {
     private static final String SELECT_ALL_PRODUCTS = "SELECT * FROM products;";
-    private static final String ADD_PRODUCT = "INSERT INTO products(name, price, date_time) VALUES;";
+    private static final String ADD_PRODUCT = "INSERT INTO products(name, price, date) VALUES;";
     private static final String DELETE_PRODUCT = "DELETE FROM products WHERE id = ?;";
-    private static final String UPDATE_PRODUCT = "UPDATE products SET name = ?, price = ?, date_time = ? WHERE id = ?;";
+    private static final String UPDATE_PRODUCT = "UPDATE products SET name = ?, price = ?, date = ? WHERE id = ?;";
     private Connection connection;
 
     @Override
@@ -24,11 +24,13 @@ public class ProductDaoImpl implements ProductDao {
         try (PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_PRODUCTS)) {
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                long id = resultSet.getLong(1);
-                final String name = resultSet.getString(2);
-                final double price = resultSet.getDouble(3);
-                final LocalDateTime dateTime = (resultSet.getTimestamp(4)).toLocalDateTime();
-                products.add(new Product(id, name, price, dateTime));
+                Product product = Product.builder()
+                        .id(resultSet.getLong(1))
+                        .name(resultSet.getString(2))
+                        .price(resultSet.getDouble(3))
+                        .date(LocalDateTime.now())
+                        .build();
+                products.add(product);
             }
         } catch (SQLException e) {
             log.info("DB access error or connection is closed, when getAllProducts", e);
@@ -42,7 +44,7 @@ public class ProductDaoImpl implements ProductDao {
         try (PreparedStatement preparedStatement = connection.prepareStatement(ADD_PRODUCT)) {
             preparedStatement.setString(1, product.getName());
             preparedStatement.setDouble(2, product.getPrice());
-            preparedStatement.setTimestamp(3, Timestamp.valueOf(product.getDateTime()));
+            preparedStatement.setTimestamp(3, Timestamp.valueOf(product.getDate()));
             preparedStatement.execute();
         } catch (SQLException e) {
             log.info("DB access error or connection is closed, when addProduct", e);
@@ -55,7 +57,7 @@ public class ProductDaoImpl implements ProductDao {
         try (PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_PRODUCT)) {
             preparedStatement.setString(1, product.getName());
             preparedStatement.setDouble(2, product.getPrice());
-            preparedStatement.setTimestamp(3, Timestamp.valueOf(product.getDateTime()));
+            preparedStatement.setTimestamp(3, Timestamp.valueOf(product.getDate()));
             preparedStatement.setLong(4, product.getId());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
@@ -65,7 +67,7 @@ public class ProductDaoImpl implements ProductDao {
     }
 
     @Override
-    public void deleteProduct(int id) {
+    public void deleteProduct(long id) {
         try (PreparedStatement preparedStatement = connection.prepareStatement(DELETE_PRODUCT)) {
             preparedStatement.setLong(1, id);
             preparedStatement.executeUpdate();
