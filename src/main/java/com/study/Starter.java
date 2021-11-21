@@ -32,7 +32,7 @@ public class Starter {
         UpdateProductController updateProductController = new UpdateProductController(productService);
 
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
-        context.addServlet(new ServletHolder(addProductController), "/product");
+        context.addServlet(new ServletHolder(addProductController), "/");
         context.addServlet(new ServletHolder(allProductController), "/products");
         context.addServlet(new ServletHolder(deleteProductController), "/delete");
         context.addServlet(new ServletHolder(updateProductController), "/update");
