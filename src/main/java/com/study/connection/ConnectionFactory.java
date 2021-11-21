@@ -13,16 +13,17 @@ import java.util.Properties;
 @AllArgsConstructor
 @Slf4j
 public class ConnectionFactory {
-    private final String DRIVER = "driver";
-    private final String URL = "url";
-    private final String USER = "user";
-    private final String PASSWORD = "password";
+    static final String DRIVER = "driver";
+    static final String URL = "url";
+    static final String USER = "user";
+    static final String PASSWORD = "password";
 
     private Properties properties;
 
     public Connection getConnection() {
         Connection connection;
         try {
+            log.error(properties.getProperty(DRIVER));
             Class.forName(properties.getProperty(DRIVER));
         } catch (ClassNotFoundException e) {
             log.info("Can't load driver!", e);

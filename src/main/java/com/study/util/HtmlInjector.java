@@ -10,7 +10,7 @@ import java.util.Map;
 public class HtmlInjector {
 
     @SneakyThrows
-    public static String buildPage(Map<String, Object> data, String path) {
+    public static String buildPage(String path, Map<String, Object> data) {
         StringWriter stream = new StringWriter();
         Configuration configuration = new Configuration(Configuration.VERSION_2_3_21);
         configuration.setClassForTemplateLoading(HtmlInjector.class, "/templates/");
