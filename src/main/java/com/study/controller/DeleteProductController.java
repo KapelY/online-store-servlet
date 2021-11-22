@@ -11,21 +11,25 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.study.controller.Constants.ID;
+import static jakarta.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
+import static jakarta.servlet.http.HttpServletResponse.SC_OK;
+
 @AllArgsConstructor
 public class DeleteProductController extends HttpServlet {
     private ProductService productService;
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        String id = req.getParameter("id");
+        String id = req.getParameter(ID);
         Map<String, Object> pageVariables = new HashMap<>();
-        resp.setContentType("text/html;charset=utf-8");
         if (id == null) {
-            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            resp.setStatus(SC_BAD_REQUEST);
             pageVariables.put("message", "Product wasn't deleted");
         } else {
-            resp.setStatus(HttpServletResponse.SC_OK);
-            productService.deleteProduct(req);
+            resp.setStatus(SC_OK);
+            long productId = Long.parseLong(id);
+            productService.deleteProduct(productId);
             pageVariables.put("message", "Product was deleted");
         }
         resp.getWriter().println(HtmlInjector.buildPage("products.ftl", pageVariables));

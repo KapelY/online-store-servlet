@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en-US">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -10,7 +10,8 @@
 <div class="container">
     <nav class="navbar navbar-light mt-5 d-flex justify-content-center" style="background-color: #e3f2fd;">
         <h3 class="nav-item p-2 center-block"><a class="nav-link text-dark" href="products">All Products</a></h3>
-        <h3 class="nav-item p-2 center-block"><a class="nav-link text-dark" href="/">Add Product</a></h3>
+        <h3 class="nav-item p-2 center-block"><a class="nav-link text-dark" href="product">Add Product</a></h3>
+        <h4 class="nav-item p-2 center-block"><a class="nav-link text-dark" href="logout">Logout</a></h4>
     </nav>
 </div>
 <div class="container mt-5">
@@ -23,7 +24,7 @@
             </div>
             <div class="row w-100 p-2 d-flex flex-row">
                 <h5 class="col-4">Product price:</h5>
-                <input class="col-4" type="number" step="0.01" value=${product.price} name="price"/>
+                <input class="col-4" type="number" step="0.01" value=${product.price?replace(',','')} name="price"/>
             </div>
             <div class="row w-100 p-2 d-flex flex-row">
                 <h5 class="col-4">Date: </h5>

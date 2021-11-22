@@ -13,7 +13,7 @@ import java.time.LocalDate;
 public class Product {
     private Long id;
     private String name;
-    private Double price;
+    private double price;
     private LocalDate date;
 }
 

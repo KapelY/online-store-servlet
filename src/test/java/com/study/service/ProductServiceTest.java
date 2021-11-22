@@ -1,5 +1,6 @@
 package com.study.service;
 
+import com.study.controller.Constants;
 import com.study.dao.ProductDao;
 import com.study.dao.ProductDaoImpl;
 import com.study.domain.Product;
@@ -35,8 +36,8 @@ class ProductServiceTest {
         ProductService productService = new ProductService(productDao);
         Product product = Product.builder().id(1L).build();
         when(productDao.getProductById(product.getId())).thenReturn(product);
-        when(request.getParameter(ProductService.ID)).thenReturn("1");
-        Product productById = productService.getProductById(request);
+        when(request.getParameter(Constants.ID)).thenReturn("1");
+        Product productById = productService.getProductById(1L);
         assertEquals(1L, productById.getId());
     }
 }
