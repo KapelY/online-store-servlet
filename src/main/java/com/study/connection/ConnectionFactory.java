@@ -22,13 +22,13 @@ public class ConnectionFactory {
 
     public Connection getConnection() {
         Connection connection;
-        try {
-            log.error(properties.getProperty(DRIVER));
-            Class.forName(properties.getProperty(DRIVER));
-        } catch (ClassNotFoundException e) {
-            log.info("Can't load driver!", e);
-            throw new RuntimeException(e);
-        }
+//        try {
+//            log.error(properties.getProperty(DRIVER));
+//            Class.forName(properties.getProperty(DRIVER));
+//        } catch (ClassNotFoundException e) {
+//            log.info("Can't load driver!", e);
+//            throw new RuntimeException(e);
+//        }
         try {
             connection = DriverManager.getConnection(properties.getProperty(URL),
                     properties.getProperty(USER), properties.getProperty(PASSWORD));
