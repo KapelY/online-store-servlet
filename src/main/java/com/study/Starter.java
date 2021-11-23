@@ -37,7 +37,7 @@ public class Starter {
         context.addServlet(new ServletHolder(deleteProductController), "/delete");
         context.addServlet(new ServletHolder(updateProductController), "/update");
 
-        Server server = new Server(8080);
+        Server server = new Server(Integer.parseInt(System.getenv().get("PORT")));
         server.setHandler(context);
         server.start();
     }
