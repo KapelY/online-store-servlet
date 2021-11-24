@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en-US">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -23,7 +23,7 @@
             </div>
             <div class="row w-100 p-2 d-flex flex-row">
                 <h5 class="col-4">Product price:</h5>
-                <input class="col-4" type="number" step="0.01" value=${product.price} name="price"/>
+                <input class="col-4" type="number" step="0.01" value=${product.price?replace(',','')} name="price"/>
             </div>
             <div class="row w-100 p-2 d-flex flex-row">
                 <h5 class="col-4">Date: </h5>

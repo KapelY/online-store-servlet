@@ -30,7 +30,6 @@ public class UpdateProductController extends HttpServlet {
         pageVariables.put("product", product);
         log.info(product.toString());
         resp.getWriter().println(HtmlInjector.buildPage("update.ftl", pageVariables));
-        resp.setStatus(SC_OK);
     }
 
     @Override
