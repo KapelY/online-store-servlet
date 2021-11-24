@@ -10,8 +10,13 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.study.controller.Constants.*;
+import static jakarta.servlet.http.HttpServletResponse.SC_BAD_REQUEST;
+import static jakarta.servlet.http.HttpServletResponse.SC_OK;
 
 @AllArgsConstructor
 @Slf4j
@@ -20,30 +25,30 @@ public class UpdateProductController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        Product product = productService.getProductById(req);
+        Product product = productService.getProductById(Long.parseLong(req.getParameter(ID)));
         Map<String, Object> pageVariables = new HashMap<>();
         pageVariables.put("product", product);
         log.info(product.toString());
-        resp.setContentType("text/html;charset=utf-8");
         resp.getWriter().println(HtmlInjector.buildPage("update.ftl", pageVariables));
-        resp.setStatus(HttpServletResponse.SC_OK);
+        resp.setStatus(SC_OK);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         Map<String, Object> pageVariables = new HashMap<>();
-        String name = req.getParameter("name");
-        String price = req.getParameter("price");
-        String date = req.getParameter("date");
-        if (name == null || price == null || date == null) {
-            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        String id = req.getParameter(ID);
+        String name = req.getParameter(NAME);
+        String price = req.getParameter(PRICE);
+        String date = req.getParameter(DATE);
+        if (id == null || name == null || price == null || date == null) {
+            resp.setStatus(SC_BAD_REQUEST);
             pageVariables.put("message", "Not allowed!");
         } else {
-            resp.setStatus(HttpServletResponse.SC_OK);
-            productService.updateProduct(req);
+            resp.setStatus(SC_OK);
+            Product product = new Product(Long.valueOf(id), name, Double.parseDouble(price), LocalDate.parse(date));
+            productService.updateProduct(product);
             pageVariables.put("message", "All done");
         }
-        resp.setContentType("text/html;charset=utf-8");
         resp.getWriter().println(HtmlInjector.buildPage("products.ftl", pageVariables));
     }
 }
