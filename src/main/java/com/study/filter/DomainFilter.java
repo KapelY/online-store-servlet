@@ -36,10 +36,14 @@ public class DomainFilter implements Filter {
 
     private String getToken(HttpServletRequest req) {
         String token = null;
-        for (Cookie cookie : req.getCookies()) {
-            if (cookie.getName().equals(TOKEN)) {
-                token = cookie.getValue();
-                break;
+
+        Cookie[] cookies = req.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals(TOKEN)) {
+                    token = cookie.getValue();
+                    break;
+                }
             }
         }
         return token;
