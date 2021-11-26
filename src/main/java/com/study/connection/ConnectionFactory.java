@@ -12,7 +12,7 @@ import java.util.Properties;
 @Data
 @AllArgsConstructor
 @Slf4j
-public class ConnectionFactory {
+public class ConnectionFactory implements DataSource {
     static final String DRIVER = "driver";
     static final String URL = "url";
     static final String USER = "user";
@@ -20,6 +20,7 @@ public class ConnectionFactory {
 
     private Properties properties;
 
+    @Override
     public Connection getConnection() {
         Connection connection;
         try {

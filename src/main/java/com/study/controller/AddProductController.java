@@ -15,6 +15,7 @@ import java.util.Map;
 
 import static com.study.controller.Constants.NAME;
 import static com.study.controller.Constants.PRICE;
+import static jakarta.servlet.http.HttpServletResponse.*;
 
 @AllArgsConstructor
 public class AddProductController extends HttpServlet {
@@ -22,8 +23,8 @@ public class AddProductController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        resp.setStatus(SC_OK);
         resp.getWriter().println(HtmlInjector.buildPage("product.ftl", new HashMap<>()));
-        resp.setStatus(HttpServletResponse.SC_OK);
     }
 
     @Override
@@ -32,10 +33,10 @@ public class AddProductController extends HttpServlet {
         String name = req.getParameter(NAME);
         String price = req.getParameter(PRICE);
         if (name == null || price == null) {
-            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            resp.setStatus(SC_BAD_REQUEST);
             pageVariables.put("message", "Product was not added as one or more fields were empty");
         } else {
-            resp.setStatus(HttpServletResponse.SC_CREATED);
+            resp.setStatus(SC_CREATED);
             Product product = Product.builder()
                     .name(req.getParameter(NAME))
                     .price(Double.parseDouble(req.getParameter(PRICE)))

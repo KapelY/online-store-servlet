@@ -10,7 +10,8 @@
 <div class="container">
     <nav class="navbar navbar-light mt-5 d-flex justify-content-center" style="background-color: #e3f2fd;">
         <h3 class="nav-item p-2 center-block"><a class="nav-link text-dark" href="products">All Products</a></h3>
-        <h3 class="nav-item p-2 center-block"><a class="nav-link text-dark" href="/">Add Product</a></h3>
+        <h3 class="nav-item p-2 center-block"><a class="nav-link text-dark" href="product">Add Product</a></h3>
+        <h4 class="nav-item p-2 center-block"><a class="nav-link text-dark" href="logout">Logout</a></h4>
     </nav>
 </div>
 <div class="container mt-5">
