@@ -1,5 +1,6 @@
 package com.study;
 
+import com.study.configuration.PropertyReader;
 import com.study.connection.ConnectionFactory;
 import com.study.connection.DataSource;
 import com.study.controller.*;
@@ -28,7 +29,7 @@ public class Starter {
     public static final String PROPERTIES = "application.properties";
 
     public static void main(String[] args) throws Exception {
-        DataSource dataSource = new ConnectionFactory(Starter.getProperties());
+        DataSource dataSource = new ConnectionFactory(new PropertyReader(PROPERTIES).getProperties());
 
         ProductDao productDao = new ProductDaoImpl(dataSource.getConnection());
         ProductService productService = new ProductService(productDao);
@@ -59,16 +60,5 @@ public class Starter {
         Server server = new Server(Integer.parseInt(System.getenv().get("PORT")));
         server.setHandler(context);
         server.start();
-    }
-
-    private static Properties getProperties() {
-        Properties properties = new Properties();
-        try (InputStream input = Starter.class.getClassLoader().getResourceAsStream(PROPERTIES)) {
-            properties.load(input);
-        } catch (IOException e) {
-            log.error("IO error in read props", e);
-            throw new RuntimeException(e);
-        }
-        return properties;
     }
 }
