@@ -7,8 +7,8 @@ import com.study.dao.ProductDao;
 import com.study.dao.ProductDaoImpl;
 import com.study.dao.UserDao;
 import com.study.dao.UserDaoImpl;
-import com.study.filter.DomainFilter;
-import com.study.service.LoginService;
+import com.study.filter.SecurityFilter;
+import com.study.service.SecurityService;
 import com.study.service.ProductService;
 import com.study.service.UserService;
 import jakarta.servlet.DispatcherType;
@@ -39,9 +39,10 @@ public class Starter {
 
         UserDao userDao = new UserDaoImpl(dataSource.getConnection());
         UserService userService = new UserService(userDao);
-        LoginService loginService = new LoginService(userService);
-        LoginController loginController = new LoginController(loginService);
-        LogoutController logoutController = new LogoutController(loginService);
+        SecurityService securityService = new SecurityService(userService);
+        LoginController loginController = new LoginController(securityService);
+        RegisterController registerController = new RegisterController(securityService);
+        LogoutController logoutController = new LogoutController(securityService);
 
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.SESSIONS);
         context.addServlet(new ServletHolder(addProductController), "/product");
@@ -49,9 +50,10 @@ public class Starter {
         context.addServlet(new ServletHolder(deleteProductController), "/delete");
         context.addServlet(new ServletHolder(updateProductController), "/update");
         context.addServlet(new ServletHolder(loginController), "/login");
+        context.addServlet(new ServletHolder(registerController), "/register");
         context.addServlet(new ServletHolder(logoutController), "/logout");
 
-        DomainFilter filter = new DomainFilter(loginService);
+        SecurityFilter filter = new SecurityFilter(securityService);
         context.addFilter(new FilterHolder(filter), "/*", EnumSet.allOf(DispatcherType.class));
 
         Server server = new Server(Integer.parseInt(System.getenv().get("PORT")));
@@ -59,7 +61,7 @@ public class Starter {
         server.start();
     }
 
-    public static Properties getProperties() {
+    private static Properties getProperties() {
         Properties properties = new Properties();
         try (InputStream input = Starter.class.getClassLoader().getResourceAsStream(PROPERTIES)) {
             properties.load(input);

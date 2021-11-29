@@ -1,6 +1,6 @@
 package com.study.controller;
 
-import com.study.service.LoginService;
+import com.study.service.SecurityService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
@@ -14,13 +14,13 @@ import static com.study.controller.Constants.TOKEN;
 
 @AllArgsConstructor
 public class LogoutController extends HttpServlet {
-    private LoginService loginService;
+    private SecurityService securityService;
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         for (Cookie cookie : req.getCookies()) {
             if (cookie.getName().equals(TOKEN)) {
-                loginService.logout(cookie.getValue());
+                securityService.logout(cookie.getValue());
                 break;
             }
         }

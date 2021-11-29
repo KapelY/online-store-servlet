@@ -14,14 +14,14 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
-public class LoginService {
+public class SecurityService {
     private final UserService userService;
     /**
      * Map<String token, Session session>
      */
     private final Map<String, Session> sessionContext = new ConcurrentHashMap<>();
 
-    public LoginService(UserService userService) {
+    public SecurityService(UserService userService) {
         this.userService = userService;
     }
 
@@ -49,7 +49,7 @@ public class LoginService {
     }
 
     public String registerTokenCurrentUser(String email, String password) {
-        if (validatePassword(email, password)) {
+        if (validCredentials(email, password)) {
             String token = getSalt();
             Session session = new Session(LocalDateTime.now(), userService.getUserByEmail(email));
             removePreviousSession(email);
@@ -74,7 +74,7 @@ public class LoginService {
         return UUID.randomUUID().toString();
     }
 
-    public boolean validatePassword(String email, String password) {
+    public boolean validCredentials(String email, String password) {
         User user = userService.getUserByEmail(email);
         if (!Objects.equals(user, null)) {
             String salt = user.getSalt();
@@ -84,7 +84,7 @@ public class LoginService {
     }
 
     @SneakyThrows
-    public String encryptPassword(String passwordToHash, String salt) {
+    private String encryptPassword(String passwordToHash, String salt) {
         MessageDigest md = MessageDigest.getInstance("SHA-512");
         md.update(salt.getBytes(StandardCharsets.UTF_8));
         byte[] bytes = md.digest(passwordToHash.getBytes(StandardCharsets.UTF_8));
@@ -97,5 +97,9 @@ public class LoginService {
 
     public boolean validToken(String token) {
         return sessionContext.containsKey(token);
+    }
+
+    public boolean contains(String email) {
+        return userService.getUserByEmail(email) != null;
     }
 }

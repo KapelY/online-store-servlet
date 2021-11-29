@@ -1,6 +1,6 @@
 package com.study.filter;
 
-import com.study.service.LoginService;
+import com.study.service.SecurityService;
 import jakarta.servlet.*;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -14,8 +14,8 @@ import static com.study.controller.Constants.TOKEN;
 
 @Slf4j
 @AllArgsConstructor
-public class DomainFilter implements Filter {
-    private LoginService loginService;
+public class SecurityFilter implements Filter {
+    private SecurityService securityService;
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
@@ -24,9 +24,10 @@ public class DomainFilter implements Filter {
         String token = getToken(req);
         String servletPath = req.getServletPath();
 
-        if (servletPath.equals("/login")) {
+        if (servletPath.equals("/login") || servletPath.equals("/register")) {
+            log.info("login or register");
             chain.doFilter(request, response);
-        } else if (token != null && loginService.validToken(token)) {
+        } else if (token != null && securityService.validToken(token)) {
             chain.doFilter(request, response);
         } else {
             log.info("Invalid token ->" + token);

@@ -6,26 +6,19 @@
     <style>
         <#include "css/style.css">
     </style>
-
-</head>
-<body>
-<!DOCTYPE html>
-<html>
-<head>
     <title>Slide Navbar</title>
-    <link rel="stylesheet" type="text/css" href="slide navbar style.css">
     <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500&display=swap" rel="stylesheet">
 </head>
 <body>
 <div class="main">
     <#if message?has_content>
-        <h1 align="center" style="color: #FFA500;">${message}</h1>
+    <H3 align="center" style="color: #FFA500; margin: 0; padding: 0">${message}</H3>
     </#if>
     <input type="checkbox" id="chk" aria-hidden="true">
-
     <div class="signup">
-        <form action="/login" method="post">
-            <label for="chk" aria-hidden="true">Sign up</label>
+
+        <form action="/register" method="post">
+            <label for="chk" aria-hidden="true" style="margin: 30px">Sign up</label>
             <input type="hidden" name="login" value="false">
             <input type="text" name="name" placeholder="User name" required="">
             <input type="email" name="email" placeholder="Email" required="">
@@ -44,9 +37,5 @@
         </form>
     </div>
 </div>
-</body>
-</html>
-<!-- partial -->
-
 </body>
 </html>

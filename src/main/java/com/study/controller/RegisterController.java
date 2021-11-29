@@ -2,6 +2,7 @@ package com.study.controller;
 
 import com.study.service.SecurityService;
 import com.study.util.HtmlInjector;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -14,34 +15,28 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.study.controller.Constants.*;
+import static com.study.controller.Constants.PASSWORD;
 
-@Slf4j
 @AllArgsConstructor
-public class LoginController extends HttpServlet {
+@Slf4j
+public class RegisterController extends HttpServlet {
     private SecurityService securityService;
-
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        resp.getWriter().println(HtmlInjector.buildPage("login.ftl", new HashMap<>()));
-    }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String email = req.getParameter(EMAIL);
         String password = req.getParameter(PASSWORD);
-
-
-        if (securityService.validCredentials(email, password)) {
-            String token = securityService.registerTokenCurrentUser(email, password);
+        if (!securityService.contains(email)) {
+            String token = securityService.registerTokenNewUser(email, password);
             Cookie cookie = new Cookie(TOKEN, token);
             cookie.setMaxAge(COOKIE_MAX_AGE);
             resp.addCookie(cookie);
-            log.info("Login successful");
+            log.info("SignUp successful");
             resp.sendRedirect("/products");
+        } else {
+            Map<String, Object> pageVariables = new HashMap<>();
+            pageVariables.put("message", "Login is used!");
+            resp.getWriter().println(HtmlInjector.buildPage("login.ftl", pageVariables));
         }
-        Map<String, Object> pageVariables = new HashMap<>();
-        pageVariables.put("message", "SignUp first!");
-        resp.getWriter().println(HtmlInjector.buildPage("login.ftl", pageVariables));
-
     }
 }
